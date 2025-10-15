@@ -3,7 +3,7 @@
     "description": "Laika Template Engine",
     "keywords": ["PHP Template Engine", "Laika Template Engine", "TPL Engine"],
     "type": "package",
-    "license": "GPL-3.0",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Laika\\Template\\": "src/"
