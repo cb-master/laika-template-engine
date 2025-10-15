@@ -1,0 +1,24 @@
+{
+    "name": "cb-master/laika-template-engine",
+    "description": "Laika Template Engine",
+    "keywords": ["PHP Template Engine", "Laika Template Engine", "TPL Engine"],
+    "type": "package",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Laika\\Template\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Cloud Bill Master",
+            "email": "strblackhawk@gmail.com"
+        },
+        {
+            "name":"Showket Ahmed",
+            "email":"riyadhtayf@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
