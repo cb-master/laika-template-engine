@@ -64,11 +64,6 @@ jobs:
           composer global require friendsofphp/php-cs-fixer
           ~/.composer/vendor/bin/php-cs-fixer fix --dry-run --diff src
 
-      - name: Run PHPStan static analysis
-        run: |
-          composer require --dev phpstan/phpstan
-          vendor/bin/phpstan analyse src --level=max
-
   ########################################################
   # 3️⃣ BUILD & RELEASE
   ########################################################

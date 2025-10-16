@@ -7,14 +7,37 @@ use Throwable;
 
 class Compiler
 {
+    /**
+     * Callable Filters
+     * @var array<string,callable>
+     */
     protected array $filters = [];
+
+    /**
+     * Absolute path to the base templates directory
+     * @var string
+     */
     protected string $basePath;
+
+    /**
+     * Callable Filters
+     * @var array<int,string>
+     */
     protected array $dependencies;
+
+    /**
+     * Callable Filters
+     * @var array<int,string|false|null>
+     */
     protected array $processingStack;
 
-    public function __construct(?string $basePath = null)
+    public function __construct(string $basePath)
     {
-        $this->basePath = $basePath ?: getcwd();
+        $resolved = realpath($basePath);
+        if ($resolved === false) {
+            throw new RuntimeException("Invalid base path: {$basePath}");
+        }
+        $this->basePath = $resolved;
         $this->dependencies = [];
         $this->processingStack = [];
     }
@@ -24,7 +47,7 @@ class Compiler
      *
      * @param string $template Raw template contents
      * @param string|null $templatePath Absolute or relative path to the template file (helps resolves includes)
-     * @return array{code:string, deps:array}
+     * @return array{code: string, deps: string[]}
      */
     public function compile(string $template, ?string $templatePath = null): array
     {
@@ -60,7 +83,7 @@ class Compiler
         // Remove raw PHP tags
         $template = preg_replace('/<\?(php|=)?(?!xml)[\s\S]*?\?>/i', '', $template);
 
-        $template = $this->handleExtends($template, $templatePath);
+        $template = $this->handleExtends($template ?? '', $templatePath);
         $template = $this->handleIncludes($template, $templatePath);
 
 
@@ -82,10 +105,10 @@ class Compiler
 
         $out = preg_replace_callback('/\{\{\s*(.+?)\s*\}\}/s', function ($m) {
             $expr   =   trim($m[1]);
-            $parts  =   preg_split('/\|/', $expr);
-            $varExpr =   array_shift($parts);
-            $filters =   array_map('trim', $parts ?: []);
-            $phpExpr =   $this->applyFilters($varExpr, $filters);
+            $parts  =   (array) preg_split('/\|/', $expr);
+            $varExpr=   array_shift($parts);
+            $filters=   array_map('trim', $parts ?: []);
+            $phpExpr=   $this->applyFilters($varExpr, $filters);
             return '<?php echo ' . $phpExpr . '; ?>';
         }, $out);
 
@@ -94,7 +117,7 @@ class Compiler
             array_pop($this->processingStack);
         }
 
-        return $out;
+        return $out ?? '';
     }
 
     ##################################################################
@@ -131,7 +154,7 @@ class Compiler
     /**
      * Convert an expression and chain of filters to PHP code.
      * @param string $expr Filter Name. Ensures bare variables get $ prefix
-     * @param array $filters Applies Filters::resolve
+     * @param array<int, string> $filters Applies Filters::resolve
      * @return string
      */
     protected function applyFilters(string $expr, array $filters): string
@@ -168,16 +191,17 @@ class Compiler
             $this->dependencies[] = realpath($file);
             $content = file_get_contents($file);
             return $this->processTemplate($content, $file);
-        }, $template);
+        }, $template) ?? '';
     }
 
     /**
-     * @param string $template Handle extends directive. Returns merged parent+child template text.
+     * @param ?string $template Handle extends directive. Returns merged parent+child template text.
      * @param ?string $templatePath Tracks parent as a dependency and prevents circular extends.
      * @return string
      */
-    protected function handleExtends(string $template, ?string $templatePath): string
+    protected function handleExtends(?string $template, ?string $templatePath): string
     {
+        $template = $template ?: '';
         if (!preg_match('/\{\%\s*extends\s+[\'\"](.+?)[\'\"]\s*\%\}/', $template, $m)) {
             return $template;
         }
@@ -235,7 +259,7 @@ class Compiler
 
         // handle nested parent/child relations recursively
         if (preg_match('/\{\%\s*extends\s+[\'\"](.+?)[\'\"]\s*\%\}/i', $merged)) {
-            $merged = $this->handleExtends($merged, null);
+            $merged = $this->handleExtends($merged ?? '', null);
         }
 
         return $merged;

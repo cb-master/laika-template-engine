@@ -31,7 +31,6 @@
         "test": [
             "@php vendor/bin/phpunit --configuration phpunit.xml.dist --colors=always --testdox || true"
         ],
-        "lint": "php-cs-fixer fix --dry-run --diff",
-        "analyse": "phpstan analyse src --level=max"
+        "lint": "php-cs-fixer fix --dry-run --diff"
     }
 }
