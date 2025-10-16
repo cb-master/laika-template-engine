@@ -28,7 +28,7 @@
     },
     "prefer-stable": true,
     "scripts": {
-        "test": "phpunit",
+        "test": "vendor/bin/phpunit --do-not-fail-on-empty-test-suite --colors=always --testdox",
         "lint": "php-cs-fixer fix --dry-run --diff",
         "analyse": "phpstan analyse src --level=max"
     }
