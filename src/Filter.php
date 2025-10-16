@@ -4,7 +4,7 @@
 namespace Laika\Template;
 
 
-class Filters
+class Filter
 {
     /**
      * Filter Maps

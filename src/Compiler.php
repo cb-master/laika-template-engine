@@ -142,7 +142,7 @@ class Compiler
                 $escaped = false;
                 continue;
             }
-            $fn = Filters::resolve($f);
+            $fn = Filter::resolve($f);
             $php = $fn ? sprintf('%s(%s)', is_string($fn) ? $fn : $f, $php) : sprintf('%s(%s)', $f, $php);
         }
 
