@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Laika\Template;
 
 use RuntimeException;

@@ -33,7 +33,7 @@ class Compiler
             $this->processingStack = [];
             $compiled = $this->processTemplate($template, $templatePath);
             // unique deps, normalized
-            $deps = array_values(array_unique(array_filter($this->dependencies, fn($p) => is_string($p) && $p !== '')));
+            $deps = array_values(array_unique(array_filter($this->dependencies, fn ($p) => is_string($p) && $p !== '')));
             return [
                 'code' => $compiled,
                 'deps' => $deps
@@ -121,7 +121,9 @@ class Compiler
 
     protected function ensureDollar(string $expr): string
     {
-        if (preg_match('/^\$|^[\'\"\(0-9]/', $expr)) return $expr;
+        if (preg_match('/^\$|^[\'\"\(0-9]/', $expr)) {
+            return $expr;
+        }
         return '$' . trim($expr);
     }
 
