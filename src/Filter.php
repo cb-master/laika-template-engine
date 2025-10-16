@@ -2,7 +2,6 @@
 
 namespace Laika\Template;
 
-
 class Filter
 {
     /**
