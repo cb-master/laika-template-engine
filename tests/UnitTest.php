@@ -1,7 +1,7 @@
 ---
 
 
-## tests/TemplateTest.php (very basic)
+## tests/UnitTest.php (very basic)
 
 
 ```php
@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 use Laika\Template\Template;
 
 
-class TemplateTest extends TestCase
+class UnitTest extends TestCase
 {
     public function testRenderSimple()
     {
