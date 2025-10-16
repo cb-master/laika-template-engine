@@ -4,7 +4,7 @@
     "keywords": ["PHP Template Engine", "Laika Template Engine", "TPL Engine"],
     "type": "package",
     "license": "MIT",
-    "version": "v1.0.0",
+    "version": "v1.0.1",
     "autoload": {
         "psr-4": {
             "Laika\\Template\\": "src/"
