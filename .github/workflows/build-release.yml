@@ -2,11 +2,11 @@ name: CI Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, beta ]
     tags:
       - 'v*.*.*'
   pull_request:
-    branches: [ beta ]
+    branches: [ main, beta ]
   workflow_dispatch:
 
 jobs:
