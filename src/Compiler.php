@@ -104,11 +104,11 @@ class Compiler
 
 
         $out = preg_replace_callback('/\{\{\s*(.+?)\s*\}\}/s', function ($m) {
-            $expr   =   trim($m[1]);
-            $parts  =   (array) preg_split('/\|/', $expr);
-            $varExpr=   array_shift($parts);
-            $filters=   array_map('trim', $parts ?: []);
-            $phpExpr=   $this->applyFilters($varExpr, $filters);
+            $expr       =   trim($m[1]);
+            $parts      =   (array) preg_split('/\|/', $expr);
+            $varExpr    =   array_shift($parts);
+            $filters    =   array_map('trim', $parts ?: []);
+            $phpExpr    =   $this->applyFilters($varExpr, $filters);
             return '<?php echo ' . $phpExpr . '; ?>';
         }, $out);
 
