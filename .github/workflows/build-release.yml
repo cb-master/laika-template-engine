@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: PHP Compatibility Check & Publish
 
 on:
   push:
@@ -134,23 +134,27 @@ jobs:
 
       - name: Prepare release artifact
         run: |
+          VERSION=${GITHUB_REF_NAME}
           mkdir build
           cp -r src composer.json LICENSE README.md build/
-          echo "v${{ github.run_number }}" > build/VERSION
-          cd build && zip -r ../laika-template-engine.zip .
+          echo "$VERSION" > build/VERSION
+          cd build && zip -r "../lptl-engine-${VERSION}.zip" .
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: laika-template-engine
-          path: laika-template-engine.zip
+          name: lptl-engine-${{ github.ref_name }}
+          path: lptl-engine-${{ github.ref_name }}.zip
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ github.run_number }}
-          name: "LTPL Engine v${{ github.run_number }}"
-          body: "Automated release build."
-          files: laika-template-engine.zip
+          tag_name: ${{ github.ref_name }}
+          name: "Template Engine: ${{ github.ref_name }}"
+          body: |
+            CLI release for ${{ github.ref_name }}  
+            Commit: ${{ github.sha }}  
+            Triggered by: ${{ github.actor }}
+          files: lptl-engine-${{ github.ref_name }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
