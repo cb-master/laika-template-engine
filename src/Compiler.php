@@ -173,7 +173,7 @@ class Compiler
             }
 
             // Disable escaping for raw and filter
-            if (in_array($name, ['raw', 'filter'], true)) {
+            if (in_array($name, ['raw', 'hook'], true)) {
                 $escaped = false;
             }
 

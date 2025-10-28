@@ -31,8 +31,8 @@ class Template
 
     protected function templateFile(string $file): string
     {
-        $file = preg_replace('/\\.tpl$/', '', $file);
-        return "{$this->path}/{$file}.tpl";
+        $file = preg_replace('/\\.ltpl$/', '', $file);
+        return "{$this->path}/{$file}.ltpl";
     }
 
     protected function cacheFilePathFor(string $templateFile, array $deps): string
