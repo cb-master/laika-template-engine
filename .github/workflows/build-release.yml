@@ -137,13 +137,13 @@ jobs:
           mkdir build
           cp -r src composer.json LICENSE README.md build/
           echo "v${{ github.run_number }}" > build/VERSION
-          cd build && zip -r ../lptl-engine-"v${{ github.run_number }}".zip .
+          cd build && zip -r ../laika-template-engine.zip .
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: lptl-engine-"v${{ github.run_number }}"
-          path: lptl-engine-"v${{ github.run_number }}".zip
+          name: laika-template-engine
+          path: laika-template-engine.zip
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -151,6 +151,6 @@ jobs:
           tag_name: v${{ github.run_number }}
           name: "LTPL Engine v${{ github.run_number }}"
           body: "Automated release build."
-          files: lptl-engine-"v${{ github.run_number }}".zip
+          files: laika-template-engine.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
