@@ -68,6 +68,17 @@ class Template
     }
 
     /**
+     * @param string $name Filter Map Name
+     * @param callable $callable Function Name or Callable as Filter
+     * @return void
+     */
+    public function addFilter(string $name, callable $callable): void
+    {
+        Filter::add($name, $callable);
+        return;
+    }
+
+    /**
      * @param string $file Render a template by name (without extension).
      * @return string
      */

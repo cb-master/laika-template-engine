@@ -9,11 +9,12 @@ class Filter
      * @var array Default Maps
      */
     protected static array $map = [
-        'upper' => 'strtoupper',
-        'lower' => 'strtolower',
-        'escape' => 'htmlspecialchars',
-        'raw' => null,
-        'length' => 'strlen',
+        'upper'     =>  'strtoupper',
+        'lower'     =>  'strtolower',
+        'raw'       =>  null,
+        'length'    =>  'strlen',
+        'hook'      =>  'apply_filter',
+        'named'     =>  'named'
     ];
 
 
@@ -32,7 +33,6 @@ class Filter
         if ($fn === null) {
             return null; // raw: special-case handled in compiler
         }
-
 
         return $fn;
     }
