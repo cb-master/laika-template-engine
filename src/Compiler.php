@@ -214,7 +214,7 @@ class Compiler
         return preg_replace_callback('/\{\%\s*include\s+[\'\"](.+?)[\'\"]\s*\%\}/', function ($m) use ($templatePath) {
             $inc = $m[1];
             $dir = $templatePath ? dirname($templatePath) : $this->basePath;
-            $file = rtrim($dir, '/') . "/{$inc}.tpl";
+            $file = rtrim($dir, '/') . "/{$inc}.html";
             if (!file_exists($file)) {
                 throw new RuntimeException("Included template not found: {$inc}");
             }

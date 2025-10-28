@@ -14,7 +14,8 @@ class Filter
         'raw'       =>  null,
         'length'    =>  'strlen',
         'hook'      =>  'apply_filter',
-        'named'     =>  'named'
+        'named'     =>  'named',
+        'date'      =>  'date',
     ];
 
 
