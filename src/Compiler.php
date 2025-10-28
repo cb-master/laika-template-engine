@@ -163,15 +163,45 @@ class Compiler
         $escaped = true;
 
         foreach ($filters as $f) {
-            if ($f === 'raw') {
-                $escaped = false;
-                continue;
+            // Detect and extract arguments inside parentheses
+            if (preg_match('/^([a-zA-Z0-9_\\\\]+)\s*\((.*)\)$/', $f, $m)) {
+                $name = $m[1];
+                $args = trim($m[2]);
+            } else {
+                $name = trim($f);
+                $args = '';
             }
-            $fn = Filter::resolve($f);
-            $php = $fn ? sprintf('%s(%s)', is_string($fn) ? $fn : $f, $php) : sprintf('%s(%s)', $f, $php);
+
+            // Disable escaping for raw and filter
+            if (in_array($name, ['raw', 'filter'], true)) {
+                $escaped = false;
+            }
+
+            $fn = Filter::resolve($name);
+            if ($fn) {
+                // Include expression as first argument + optional args
+                $php = sprintf(
+                    '%s(%s%s%s)',
+                    is_string($fn) ? $fn : $name,
+                    $php,
+                    $args !== '' ? ', ' : '',
+                    $args
+                );
+            } else {
+                // Unknown filter — assume callable function
+                $php = sprintf(
+                    '%s(%s%s%s)',
+                    $name,
+                    $php,
+                    $args !== '' ? ', ' : '',
+                    $args
+                );
+            }
         }
 
-        return $escaped ? "htmlspecialchars($php, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')" : $php;
+        return $escaped
+            ? "htmlspecialchars($php, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')"
+            : $php;
     }
 
     /**
