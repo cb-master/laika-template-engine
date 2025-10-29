@@ -178,25 +178,17 @@ class Compiler
             }
 
             $fn = Filter::resolve($name);
-            if ($fn) {
-                // Include expression as first argument + optional args
-                $php = sprintf(
-                    '%s(%s%s%s)',
-                    is_string($fn) ? $fn : $name,
-                    $php,
-                    $args !== '' ? ', ' : '',
-                    $args
-                );
-            } else {
-                // Unknown filter — assume callable function
-                $php = sprintf(
-                    '%s(%s%s%s)',
-                    $name,
-                    $php,
-                    $args !== '' ? ', ' : '',
-                    $args
-                );
+            if (!$fn) {
+                throw new RuntimeException("Unsupported Filter: '{$name}'!");
             }
+            // Include expression as first argument + optional args
+            $php = sprintf(
+                '%s(%s%s%s)',
+                is_string($fn) ? $fn : $name,
+                $php,
+                $args !== '' ? ', ' : '',
+                $args
+            );
         }
 
         return $escaped

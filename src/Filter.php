@@ -16,6 +16,7 @@ class Filter
         'hook'      =>  'apply_filter',
         'named'     =>  'named',
         'date'      =>  'date',
+        'showdate'  =>  'showdate',
     ];
 
 
