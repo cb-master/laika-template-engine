@@ -57,13 +57,19 @@ class Template
 
     /**
      * Assign Vars
-     * @param string $key Data Varable Key Name. Example: 'name'
-     * @param mixed $value Data Varable Key Value. Example: 'Cloud Bill Master'
+     * @param string|array $key Data Varable Key Name. Example: 'name'
+     * @param mixed $value Data Varable Key Value. Example: 'Cloud Bill Master'. Default is null
      * @return void
      */
-    public function assign(string $key, mixed $value): void
+    public function assign(string|array $key, mixed $value = null): void
     {
-        $this->vars[$key] = $value;
+        if (is_array($key)) {
+            foreach ($key as $k => $v) {
+                $this->vars[$k] = $v;
+            }
+        } else {
+            $this->vars[$key] = $value;
+        }
         return;
     }
 
